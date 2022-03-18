@@ -2,6 +2,7 @@ const path = require("path");
 const uuid = require("uuid");
 const { Post } = require("../models/models");
 const ApiError = require("../error/ApiError");
+const { json } = require("express/lib/response");
 // let fileName = uuid.v4() + ".jpg";
 
 // console.log(fileName);
@@ -9,8 +10,7 @@ const ApiError = require("../error/ApiError");
 class PostsController {
   async create(req, res, next) {
     try {
-      console.log(req.body);
-      const { title, description } = req.body;
+      const { title, description, user_id } = req.body;
       const { img } = req.files;
       let fileName = uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
@@ -18,7 +18,7 @@ class PostsController {
         title,
         description,
         img: fileName,
-        // userId,
+        user_id,
       });
       return res.json(post);
     } catch (error) {
@@ -30,11 +30,24 @@ class PostsController {
     page = page || 1;
     limit = limit || 10;
     let offset = page * limit - limit;
-    const post = await Post.findAll({ limit, offset });
+    const post = await Post.findAndCountAll({ limit, offset });
     return res.json(post);
   }
-  async getOne(res, req) {}
-  async delete(req, res) {}
+  async getOne(req, res) {
+    const { id } = req.params;
+    const post = await Post.findOne({
+      where: { id },
+    });
+    return res.json(post);
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const post = await Post.destroy({
+      where: { id },
+    });
+    return res.json(post);
+  }
 }
 
 module.exports = new PostsController();

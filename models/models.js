@@ -13,7 +13,8 @@ const Post = sequelize.define("posts", {
   title: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
   img: { type: DataTypes.STRING, allowNull: false },
-  // userId: { type: DataTypes.INTEGER },
+  user_id: { type: DataTypes.INTEGER },
+  userId: { type: DataTypes.INTEGER },
 });
 
 User.hasMany(Post);

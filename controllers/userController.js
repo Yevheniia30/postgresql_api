@@ -50,11 +50,9 @@ class UserController {
   }
 
   async check(req, res, next) {
-    const query = req.query;
-    if (5 < 3) {
-      return next(ApiError.badRequest("err"));
-    }
-    res.json(query);
+    const { id, email, role } = req.user;
+    const token = generateJwt(id, email, role);
+    return res.json({ token });
   }
 }
 

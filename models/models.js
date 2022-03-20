@@ -12,7 +12,9 @@ const Post = sequelize.define("posts", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
-  img: { type: DataTypes.STRING, allowNull: false },
+  // img: { type: DataTypes.STRING, allowNull: false },
+  img: { type: DataTypes.STRING },
+
   user_id: { type: DataTypes.INTEGER },
   userId: { type: DataTypes.INTEGER },
 });

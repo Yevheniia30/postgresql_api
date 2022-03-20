@@ -9,11 +9,16 @@ const { json } = require("express/lib/response");
 
 class PostsController {
   async create(req, res, next) {
+    console.log("req", req);
     try {
       const { title, description, user_id } = req.body;
-      const { img } = req.files;
-      let fileName = uuid.v4() + ".jpg";
-      img.mv(path.resolve(__dirname, "..", "static", fileName));
+      let fileName = "";
+      if (req.files) {
+        const { img } = req.files;
+        fileName = uuid.v4() + ".jpg";
+        img.mv(path.resolve(__dirname, "..", "static", fileName));
+      }
+
       const post = await Post.create({
         title,
         description,
